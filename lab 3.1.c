@@ -35,10 +35,13 @@ int main(){
             if (check_X != 1) {
                 printf("\nPlease, enter a number one more time.\nIf you write symbols after numbers, we use numbers written before symbols.\n");
                 fflush (stdin);
-            /*} else if ((k > 0 && k%2.0==0 && x < 0) || (k<0 && k%2.0==0 && x <= 0) || (k<0 && k%2.0==1 && x==0)){
-            printf ("Please, enter other numbers"); */
-        }
-        } while (check_X != 1);
+            }
+
+            if ((k > 0 && (fmodf(k,2)==0) && x < 0) || (k<0 && fmodf(k,2)==0 && x <= 0) || (k<0 && (fmodf(k,2) !=0) && x==0)){
+            printf ("Please, enter other numbers");
+            }
+
+        } while (check_X != 1 || ((k > 0 && (fmodf(k,2)==0) && x < 0) || (k<0 && fmodf(k,2)==0 && x <= 0) || (k<0 && (fmodf(k,2) !=0) && x==0)));
 
 
     //epsilon checking
@@ -52,17 +55,23 @@ int main(){
             }
         } while (check_E != 1);
 
-        do {
-            delta = ((x/(pow(y1,k-1))-y1)/k);
-            y = y1 + delta;
-        } while (fabs(delta) < epsilon);
 
+        if ((fmodf(k,2) == 0 || fmodf(k,2) != 0)&& k > 0){
+
+            while (fabsf(delta) >= epsilon){
+                delta = ((x/(powf(y1,k-1))-y1)/k);
+                y = y1 + delta;
+            }
+        } else if ((fmodf(k,2) == 0 || fmodf(k,2) != 0)&& k < 0) {
+            while (fabsf(delta) >= epsilon){
+                k = fabsf(k);
+                delta = ((x/(powf(y1,k-1))-y1)/k);
+                y = 1/(y1 + delta);
+            }
+        }
         printf ("\nThe %f-th root of %f = %f\n\n", k, x, y);
-
 
     } while (getch() != 27);
     return 0;
 }
-
-
 
